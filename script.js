@@ -7,7 +7,16 @@ let handleCharClick = (id) => {
     lastChar = field[field.length-1];
     lastChar2 = field[field.length-2];
     if(field == "") return;
-    if(isNaN(lastChar) == true){
+    if(id == "."){
+        let i = 1;
+        while(isNaN(field[field.length-i]) == false){
+            i++;
+            continue;
+        }
+        if(field[field.length-i] == ".") return;
+        else document.getElementById("field").innerText += id;
+    }
+    else if(isNaN(lastChar) == true){
         if(lastChar == "*" && ((lastChar == "*" && lastChar2 == "*") == false)) document.getElementById("field").innerText += id;
         else alert("wtf");
     }
