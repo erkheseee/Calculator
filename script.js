@@ -42,20 +42,17 @@ document.getElementById("calculate").addEventListener("click", handleCalculate =
     field.map(char => {
         if(isNaN(char) == false){
             number.push(char);
-            console.log(char, "too");
         }
         else if(char == ".") number.push(char);
         else if(isNaN(char) == true){
             if(char == "*" && operations[operations.length-1] == "*"){
                 operations.pop();
                 operations.push("**");
-                console.log(char, "temdeg")
             }
             else{
                 numbers.push(parseFloat(number.toString().replace(/,/g,'')));
                 number = [];
                 operations.push(char);
-                console.log(char, "temdeg")
             }
         }
     });
@@ -68,29 +65,63 @@ document.getElementById("calculate").addEventListener("click", handleCalculate =
         calculate.push(operations[i]);
     }
     calculate.push(numbers[numbers.length-1]);
-    console.log(calculate);
 
 // calculate the expression
+    let operationOrder = [];
+    let orderedOperation = [];
     while(calculate.length > 1){
+
+        //put all operations in an array
         for(let i = 0; i < calculate.length; i++){
             if(isNaN(calculate[i]) == true){
                 {
-                    if(calculate[i] == "**") calculate[i] = calculate[i-1]**calculate[i+1];
-                    else if(calculate[1] == "*") calculate[i] = calculate[i-1]*calculate[i+1];
-                    else if(calculate[1] == "/") calculate[i] = calculate[i-1]/calculate[i+1];
-                    else if(calculate[1] == "+") calculate[i] = calculate[i-1]+calculate[i+1];
-                    else if(calculate[1] == "-") calculate[i] = calculate[i-1]-calculate[i+1];
-                    calculate.splice(i+1, 1);
-                    calculate.splice(i-1, 1);
-                    break;
+                    let obj = {'index': i, 'operand': calculate[i]};
+                    operationOrder.push(obj);
                 }
             }
         }
-        console.log(calculate.length);
-    }
 
-    console.log(calculate);
+        //sort the operations in the array
+        while(operationOrder.length > 0){
+            operationOrder.map((object, index) => {
+                if(object['operand'] == "**"){
+                    orderedOperation.push(object);
+                    operationOrder.splice(index, 1);
+                }
+            });
+            operationOrder.map((object, index) => {
+                if(object['operand'] == "*" || object['operand'] == "/"){
+                    orderedOperation.push(object);
+                    operationOrder.splice(index, 1);
+                }
+            });
+            operationOrder.map((object, index) => {
+                if(object['operand'] == "+" || object['operand'] == "-"){
+                    orderedOperation.push(object);
+                    operationOrder.splice(index, 1);
+                }
+            });
+        }
+
+        //78+3**2-3*9 enig chadku uchir n nemeh uildel hurtel 2 uildel huleetsen bolhor 4 indexer butsah yostoi enend zoriulj tooluur hiih
+        orderedOperation.map((object,index) => {
+            if(index > 0 && object['index'] > orderedOperation[index-1]['index']) object['index'] -= 2;
+            let id = object['index'];
+            let operand = object['operand'];
+            let num1 = calculate[id-1];
+            let num2 = calculate[id+1];
+            console.log(num1, num2, operand);
+            switch(operand){
+                case "**": calculate[id-1] = num1**num2; calculate.splice(id, 1); calculate.splice(id, 1); break;
+                case "*": calculate[id-1] = num1*num2; calculate.splice(id, 1); calculate.splice(id, 1); break;
+                case "/": calculate[id-1] = num1/num2; calculate.splice(id, 1); calculate.splice(id, 1); break;
+                case "+": calculate[id-1] = num1+num2; calculate.splice(id, 1); calculate.splice(id, 1); break;
+                case "-": calculate[id-1] = num1-num2; calculate.splice(id, 1); calculate.splice(id, 1); break;
+            }
+        });
+    }
+    document.getElementById('field').innerText = "="+calculate[0];
 });
 
 
-// hasah too => haalt ashiglah bh, olon . in bug
+// hasah too => haalt ashiglah bh
