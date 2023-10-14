@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
     <title>Calculator</title>
+    <script src="script.js" defer></script>
 </head>
 <body>
     <div style="display: flex; justify-content: center; padding: 100px">
@@ -19,28 +20,28 @@
                 <button id="calculate">=</button>
             </div>
             <div class="row">
-                <button id="7">7</button>
-                <button id="8">8</button>
-                <button id="9">9</button>
-                <button id="*">*</button>
+                <button onclick="handleNumberClick(this.id)" id="7">7</button>
+                <button onclick="handleNumberClick(this.id)" id="8">8</button>
+                <button onclick="handleNumberClick(this.id)" id="9">9</button>
+                <button onclick="handleCharClick(this.id)" id="*">*</button>
             </div>
             <div class="row">
-                <button id="4">4</button>
-                <button id="5">5</button>
-                <button id="6">6</button>
-                <button id="/">/</button>
+                <button onclick="handleNumberClick(this.id)" id="4">4</button>
+                <button onclick="handleNumberClick(this.id)" id="5">5</button>
+                <button onclick="handleNumberClick(this.id)" id="6">6</button>
+                <button onclick="handleCharClick(this.id)" id="/">/</button>
             </div>
             <div class="row">
-                <button id="1">1</button>
-                <button id="2">2</button>
-                <button id="3">3</button>
-                <button id="+">+</button>
+                <button onclick="handleNumberClick(this.id)" id="1">1</button>
+                <button onclick="handleNumberClick(this.id)" id="2">2</button>
+                <button onclick="handleNumberClick(this.id)" id="3">3</button>
+                <button onclick="handleCharClick(this.id)" id="+">+</button>
             </div>
             <div class="row">
-                <button id="0">0</button>
-                <button id="00">00</button>
-                <button id=".">.</button>
-                <button id="-">-</button>
+                <button onclick="handleNumberClick(this.id)" id="0">0</button>
+                <button onclick="handleNumberClick(this.id)" id="00">00</button>
+                <button onclick="handleCharClick(this.id)" id=".">.</button>
+                <button onclick="handleCharClick(this.id)" id="-">-</button>
             </div>
         </div>
     </div>
