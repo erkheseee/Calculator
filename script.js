@@ -37,6 +37,8 @@ document.getElementById("calculate").addEventListener("click", handleCalculate =
     numbers = [];
     number = [];
     operations = [];
+
+    if(isNaN(field[field.length - 1]) == true) return;
     
     //sorting numbers and operators in field
     field.map(char => {
@@ -103,20 +105,27 @@ document.getElementById("calculate").addEventListener("click", handleCalculate =
             });
         }
 
-        //78+3**2-3*9 enig chadku uchir n nemeh uildel hurtel 2 uildel huleetsen bolhor 4 indexer butsah yostoi enend zoriulj tooluur hiih
-        orderedOperation.map((object,index) => {
-            if(index > 0 && object['index'] > orderedOperation[index-1]['index']) object['index'] -= 2;
+        //8+3**2-3*9 in this example when after **, *, + are done, since the calculate array is shorter,
+        //the - operands indexes no longer exist. So after every operation, the operands proceeding that
+        //operand in the calculate array are shifted back 2 arrays
+        let shiftIndex = (orderedOperation, id) => {
+            orderedOperation.map((object) => {
+                if(object['index'] > id) object['index'] -= 2;
+            });
+        }
+
+        orderedOperation.map((object) => {
             let id = object['index'];
             let operand = object['operand'];
             let num1 = calculate[id-1];
             let num2 = calculate[id+1];
             console.log(num1, num2, operand);
             switch(operand){
-                case "**": calculate[id-1] = num1**num2; calculate.splice(id, 1); calculate.splice(id, 1); break;
-                case "*": calculate[id-1] = num1*num2; calculate.splice(id, 1); calculate.splice(id, 1); break;
-                case "/": calculate[id-1] = num1/num2; calculate.splice(id, 1); calculate.splice(id, 1); break;
-                case "+": calculate[id-1] = num1+num2; calculate.splice(id, 1); calculate.splice(id, 1); break;
-                case "-": calculate[id-1] = num1-num2; calculate.splice(id, 1); calculate.splice(id, 1); break;
+                case "**": calculate[id-1] = num1**num2; calculate.splice(id, 2); shiftIndex(orderedOperation, id); break;
+                case "*": calculate[id-1] = num1*num2; calculate.splice(id, 2); shiftIndex(orderedOperation, id); break;
+                case "/": calculate[id-1] = num1/num2; calculate.splice(id, 2); shiftIndex(orderedOperation, id); break;
+                case "+": calculate[id-1] = num1+num2; calculate.splice(id, 2); shiftIndex(orderedOperation, id); break;
+                case "-": calculate[id-1] = num1-num2; calculate.splice(id, 2); shiftIndex(orderedOperation, id); break;
             }
         });
     }
